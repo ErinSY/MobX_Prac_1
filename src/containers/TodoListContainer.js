@@ -11,13 +11,13 @@ class TodoListContainer extends Component {
     this.props.value.selectTodo(todo);
   }
 
- 
-
   render() {
-    const { value } = this.props;
-
-    console.log(this.props.value.todos);
-    return <TodoListView todo={value.todos} onselected={this.selectedToDo} />;
+    let { todos, searchText } = this.props.value;
+    todos = todos.filter(
+      (todo) =>
+        todo.title.toLowerCase().indexOf(searchText.toLowerCase()) !== -1
+    );
+    return <TodoListView todo={todos} onselected={this.selectedToDo} />;
   }
 }
 
