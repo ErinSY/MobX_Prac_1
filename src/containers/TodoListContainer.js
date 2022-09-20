@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 import TodoListView from '../views/TodoListView';
-import { inject, observer } from 'mobx-react'; // 6. 필요한 API import
+import { inject, observer } from 'mobx-react';
+import autobind from 'autobind-decorator';
 
-@inject('value') // 7. 필요한 스토어 import
+@inject('value')
+@autobind
 @observer
 class TodoListContainer extends Component {
+  selectedToDo(todo) {
+    this.props.value.selectTodo(todo);
+  }
+
+ 
+
   render() {
     const { value } = this.props;
-    return <TodoListView todo={value.todos} />;
+
+    console.log(this.props.value.todos);
+    return <TodoListView todo={value.todos} onselected={this.selectedToDo} />;
   }
 }
 

@@ -12,10 +12,19 @@ class TodoEditFormContainer extends Component {
     this.props.value.setTodos(name, values);
   }
 
-  addTodo() {                 // 3. 함수추가 
-    let todo = this.props.value;    // todo 가져오기
-    todo = { ...todo, id: generateId(5) };  // id 값추가해주기 
-    this.props.value.addTodos(todo);  //  todo 넣어주기 
+  addTodo() {
+    // 3. 함수추가
+    let { todo } = this.props.value; // todo 가져오기
+    todo = { ...todo, id: generateId(5) }; // id 값추가해주기
+    this.props.value.addTodos(todo); //  todo 넣어주기
+  }
+
+  updateTodo() {
+    this.props.value.updateTodo();
+  }
+
+  deleteTodo() {
+    this.props.value.deleteTodo();
   }
 
   render() {
@@ -25,6 +34,8 @@ class TodoEditFormContainer extends Component {
         todo={value.todo}
         setToDo={this.setToDo}
         addTodo={this.addTodo}
+        updateTodo={this.updateTodo}
+        deleteTodo={this.deleteTodo}
       />
     );
   }

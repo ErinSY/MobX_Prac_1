@@ -131,3 +131,94 @@ render() {
 
 5. TodoListContainer / TodoListView 컴포넌트에서 inject > props넘겨주기 > 데이터 사용
    재진행.
+
+<br>
+<br>
+<hr>
+<br>
+<br>
+
+## 3. 특정데이터 선택하기 \_ 삭제 / 업데이트 기능
+
+> TodoList테이블에 보여지고 있는 데이터 (배열안에 들어가있는 todo들)중 하나를 선택하면 선택된 항목의 데이터가 다시 사용자 입력창에 보여지게 된다. 그 후 , 데이터를 수정하여 `update`버튼을 누르면 데이터가 업데이트 되고 `delete`버튼을 누르면 삭제된다.
+
+<br>
+
+### 1. 데이터 선택
+
+- Store의 this.\_todo에 선택된 데이터를 대입
+- 마찬가지로 컨테이너에서 함수를 만들어주고 view로 보내준다.
+- view에서 사용
+
+```js
+
+// /store.js
+@observable
+  _todo = {};
+
+  get todo() {
+    return this._todo;
+  }
+
+  selectTodo = (todo) => {
+    this._todo = todo;
+  };
+
+```
+
+```js
+// /viewcomponent.js
+// 데이터리스트를  map으로 뿌려주었으므로 해당 todo가 담긴다.
+{
+  Array.isArray(todo) && todo.length ? (
+    todo.map((todo) => (
+      <TableRow key={todo.id} hover onClick={() => onselected(todo)}>
+        <TableCell>{todo.title}</TableCell>
+        <TableCell>{moment(todo.date).format('YYYY-MM-DD')}</TableCell>
+      </TableRow>
+    ))
+  ) : (
+    <TableRow>
+      <TableCell>Empty</TableCell>
+    </TableRow>
+  );
+}
+```
+
+<br>
+
+### 2. 데이터 업데이트
+
+- 데이터리스트중, 선택되어있는 todo의 id 값이 같은 todo를 찾는다.
+- 찾은 todo의 title / date값을 새로운 값으로 바꿔준다.
+- 마찬가지로 컨테이너에서 함수를 만들어주고 view로 보내준다.
+- view에서 사용
+
+```js
+  @action
+  updateTodo = () => {
+    let selected = this._todos.find((todo) => this._todo.id === todo.id);
+    selected.title = this._todo.title;
+    selected.date = this._todo.date;
+    this._todo = {}; // todo비우기
+  };
+```
+
+<br>
+
+### 3. 데이터 삭제
+
+- 데이터리스트중, 선택되어있는 todo의 index값을 찾는다
+- 데이터리스트 배열에서 splice 메서드를 사용하여 해당 데이터를 삭제해준다.
+- 마찬가지로 컨테이너에서 함수를 만들어주고 view로 보내준다.
+- view에서 사용
+
+```js
+  @action
+  deleteTodo = () => {
+    let selected = this._todos.find((todo) => this._todo.id === todo.id);
+    let index = this._todos.indexOf(selected);
+    this._todos.splice(index, 1);
+    this._todo = {};
+  };
+```

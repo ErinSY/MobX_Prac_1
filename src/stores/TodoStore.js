@@ -5,23 +5,47 @@ class TodoStore {
     makeAutoObservable(this);
   }
   @observable
-  todo = {};
+  _todo = {};
 
-  @observable //1. todos 배열추가
+  @observable
   _todos = [];
 
   get todos() {
     return toJS(this._todos);
   }
+  get todo() {
+    return this._todo;
+  }
 
   @action
   setTodos = (name, value) => {
-    this.todo = { ...this.todo, [name]: value };
+    this._todo = { ...this._todo, [name]: value };
   };
 
-  @action // 2. 새로운 todo가 추가되는 메소드 생성
+  @action
   addTodos = (todo) => {
     this._todos.push(todo);
+  };
+
+  @action
+  selectTodo = (todo) => {
+    this._todo = todo;
+  };
+
+  @action
+  updateTodo = () => {
+    let selected = this._todos.find((todo) => this._todo.id === todo.id);
+    selected.title = this._todo.title;
+    selected.date = this._todo.date;
+    this._todo = {};
+  };
+
+  @action
+  deleteTodo = () => {
+    let selected = this._todos.find((todo) => this._todo.id === todo.id);
+    let index = this._todos.indexOf(selected);
+    this._todos.splice(index, 1);
+    this._todo = {};
   };
 }
 

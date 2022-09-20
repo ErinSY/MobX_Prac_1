@@ -12,7 +12,7 @@ import {
 
 class TodoEditFormView extends PureComponent {
   render() {
-    const { todo, setToDo, addTodo } = this.props; //4. view에 가져오기
+    const { todo, setToDo, addTodo, updateTodo, deleteTodo } = this.props;
 
     return (
       <form noValidate>
@@ -54,6 +54,7 @@ class TodoEditFormView extends PureComponent {
           </Button>
           &nbsp;&nbsp;
           <Button
+            onClick={updateTodo}
             variant='contained'
             color='default'
             startIcon={<UpdateIcon />}
@@ -62,6 +63,7 @@ class TodoEditFormView extends PureComponent {
           </Button>
           &nbsp;&nbsp;
           <Button
+            onClick={deleteTodo}
             variant='contained'
             color='secondary'
             startIcon={<DeleteIcon />}
