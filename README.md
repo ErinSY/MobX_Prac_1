@@ -1,5 +1,9 @@
 # MobX 연습\_ Todo List 만들기
 
+## 1. 데이터 업데이트 감지
+
+> input 창의 title 과 Date를 바꾸면 TodoStore에 있는 observable 데이터가 업데이트되며 input Value에서 감지 / 업데이트
+
 ### 사용된 컴포넌트
 
 - Container : `TodoEditFormContainer`
@@ -52,3 +56,78 @@ class TodoEditFormContainer extends Component {
 
 - input value : `value={todo && todo.title ? todo.title : ''}`
 - onChange : `onChange={(event) => setToDo('title', event.target.value)}`
+
+<br>
+<br>
+<hr>
+<br>
+<br>
+
+## 2. 데이터 추가기능
+
+> ADD 버튼을 누르면 TodoStore에 `todos`라는 배열객체를 선언하고 사용자가 입력한 값과 날짜를 담아 `TodoListContainer`컨테이너를 통해 `TodoListView`에 보여지게됨.
+
+### 사용된 컴포넌트
+
+- Container : `TodoListContainer`
+- View : `TodoListView`
+
+### 순서
+
+1. TodoStore 에 todo가 추가될 observable 배열 추가
+
+```js
+ @observable //1. todos 배열추가
+  _todos = [];
+```
+
+<br>
+
+2. TodoStor에 배열에 todo추가하는 action 메소드생성
+
+```js
+  @action
+  addTodos = (todo) => {
+    this._todos.push(todo);
+  };
+```
+
+<br>
+
+3. EditContainer에 함수추가 및 EditView로 함수 넘겨주기
+
+```js
+  addTodo() {                 // 3. 함수추가
+    let todo = this.props.value;    // todo 가져오기
+    todo = { ...todo, id: generateId(5) };  // id 값추가해주기
+    this.props.value.addTodos(todo);  //  todo 넣어주기
+  }
+
+  render() {
+    const { value } = this.props;
+    return (
+      <TodoEditFormView
+        addTodo={this.addTodo}
+      />
+    );
+  }
+```
+
+<br>
+
+4. EditView의 ADD 버튼에 넘겨받은 함수 연결
+
+```js
+render() {
+    const {addTodo } = this.props;
+
+    return (
+  <Button onClick={addTodo}>Add</Button>
+  )
+}
+```
+
+<br>
+
+5. TodoListContainer / TodoListView 컴포넌트에서 inject > props넘겨주기 > 데이터 사용
+   재진행.

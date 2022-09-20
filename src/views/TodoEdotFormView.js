@@ -12,7 +12,7 @@ import {
 
 class TodoEditFormView extends PureComponent {
   render() {
-    const { todo, setToDo } = this.props;
+    const { todo, setToDo, addTodo } = this.props; //4. view에 가져오기
 
     return (
       <form noValidate>
@@ -44,7 +44,12 @@ class TodoEditFormView extends PureComponent {
           </Grid>
         </Grid>
         <Grid item>
-          <Button variant='contained' color='primary' startIcon={<SaveIcon />}>
+          <Button
+            onClick={addTodo} // 5. onClick이벤트에 함수전달
+            variant='contained'
+            color='primary'
+            startIcon={<SaveIcon />}
+          >
             Add
           </Button>
           &nbsp;&nbsp;

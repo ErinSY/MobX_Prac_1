@@ -1,14 +1,24 @@
 import React, { PureComponent } from 'react';
+import { observer } from 'mobx-react';
 
-import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper } from '@material-ui/core';
+import {
+  Table,
+  TableContainer,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Paper,
+} from '@material-ui/core';
 
+@observer
 class TodoListView extends PureComponent {
-  render(){
-
-    const sample = [{id: 1, title:'title1', date:'date1'}, {id: 2, title:'title2', date:'date2'}]
+  render() {
+    const { todo } = this.props;
+    console.log(todo);
 
     return (
-      <TableContainer component={Paper} >
+      <TableContainer component={Paper}>
         <Table m={3}>
           <TableHead>
             <TableRow>
@@ -17,17 +27,22 @@ class TodoListView extends PureComponent {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sample.map( (todo ) => (
-              <TableRow key={todo.id} >
-                <TableCell>{todo.title}</TableCell>
-                <TableCell>{todo.date}</TableCell>
+            {Array.isArray(todo) && todo.length ? (
+              todo.map((todo) => (
+                <TableRow key={todo.id}>
+                  <TableCell>{todo.todo.title}</TableCell>
+                  <TableCell>{todo.todo.date}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell>Empty</TableCell>
               </TableRow>
-            ))}
-            
+            )}
           </TableBody>
         </Table>
       </TableContainer>
-    )
+    );
   }
 }
 
